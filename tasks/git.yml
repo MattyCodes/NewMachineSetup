@@ -1,0 +1,7 @@
+---
+- name: Deploy ~/.gitconfig
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/gitconfig"
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    mode: "0644"
+    backup: true

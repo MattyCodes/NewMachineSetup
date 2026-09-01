@@ -1,0 +1,48 @@
+# ~/.bash_profile  (managed by NewMachineSetup)
+
+# --- Aliases ---
+alias reload="source ~/.bash_profile"
+alias commit="git add .; git commit -m"
+alias g="git"
+alias gs="git status"
+alias co="git checkout"
+alias v="nvim"
+alias b="bundle exec"
+
+# --- Prompt ---
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+d_name() {
+  echo -e "${PWD##*/}"
+}
+
+export PS1=' \[\e[96m\]\[\e[32m\]$(d_name)\[\e[96m\]$(parse_git_branch)\[\e[0m\]: \[\e[m\]'
+export TERM='xterm-256color'
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# --- Homebrew ---
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv bash)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv bash)"
+fi
+
+# --- nvm (installed via Homebrew) ---
+export NVM_DIR="$HOME/.nvm"
+if command -v brew >/dev/null 2>&1; then
+  _nvm_prefix="$(brew --prefix nvm 2>/dev/null)"
+  [ -s "$_nvm_prefix/nvm.sh" ] && \. "$_nvm_prefix/nvm.sh"
+  [ -s "$_nvm_prefix/etc/bash_completion.d/nvm" ] && \. "$_nvm_prefix/etc/bash_completion.d/nvm"
+  unset _nvm_prefix
+fi
+
+# --- rbenv ---
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init - bash)"
+fi
+
+# --- Machine-local env / secrets (NOT tracked in git) ---
+# Put API keys and anything machine-specific in ~/.secrets
+[ -f "$HOME/.secrets" ] && source "$HOME/.secrets"

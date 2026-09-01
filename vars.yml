@@ -1,0 +1,39 @@
+---
+# Architecture-aware Homebrew location (Apple Silicon vs Intel).
+homebrew_prefix: "{{ '/opt/homebrew' if ansible_facts['architecture'] == 'arm64' else '/usr/local' }}"
+
+# CLI tools installed as Homebrew formulae.
+homebrew_formulae:
+  - git
+  - python                # "Python installed"
+  - rbenv                 # "Rbenv setup"
+  - ruby-build            # rbenv plugin that actually builds Ruby versions
+  - nvm                   # "NVM setup"
+  - awscli                # "AWS CLI installed"
+  - docker                # docker CLI (pairs with both Colima and Docker Desktop)
+  - docker-compose
+  - docker-buildx
+  - colima                # FOSS container runtime
+  - neovim
+
+# GUI apps installed as Homebrew casks.
+homebrew_casks:
+  - iterm2                # "iTerm downloaded"
+  - docker-desktop        # "Docker installed"
+  - brave-browser         # "Brave Browser installed"
+  - tidal                 # "Tidal installed"
+  - slack                 # "Slack desktop installed"
+  - claude                # "Claude desktop installed"
+  - visual-studio-code    # "VSCode installed"
+
+vscode_extensions:
+  - jdinhlife.gruvbox     # Gruvbox theme for VS Code
+
+# Language runtimes.
+# node_version is passed straight to `nvm install` ("--lts", "20", "lts/iron", ...).
+# Set to "" to skip installing a Node version (nvm itself is still installed).
+node_version: "--lts"
+# ruby_version is passed to `rbenv install` (e.g. "3.3.6").
+# Left empty by default because Ruby builds are slow and version choice is
+# usually project-specific. Set it to install + set a global Ruby.
+ruby_version: ""

@@ -1,0 +1,20 @@
+---
+- name: Deploy ~/.bash_profile
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/bash_profile"
+    dest: "{{ ansible_env.HOME }}/.bash_profile"
+    mode: "0644"
+    backup: true
+
+- name: Create an empty ~/.secrets for machine-local env vars (never overwritten)
+  ansible.builtin.copy:
+    content: "# Machine-local secrets and env vars. NOT tracked by git.\n# e.g. export SOME_API_KEY=...\n"
+    dest: "{{ ansible_env.HOME }}/.secrets"
+    mode: "0600"
+    force: false
+
+- name: Make /bin/bash the login shell
+  ansible.builtin.command:
+    cmd: chsh -s /bin/bash
+  when: ansible_env.SHELL != "/bin/bash"
+  changed_when: true

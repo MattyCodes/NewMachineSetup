@@ -1,0 +1,57 @@
+---
+- name: Reproduce Matty's Mac setup
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+    - vars.yml
+
+  # Make sure Homebrew (and anything it installed) is on PATH for every task,
+  # even on the very first run before ~/.bash_profile is in effect.
+  environment:
+    PATH: "{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin:{{ ansible_env.PATH }}"
+
+  tasks:
+    - name: Assert this is macOS
+      ansible.builtin.assert:
+        that: ansible_facts['os_family'] == 'Darwin'
+        fail_msg: "This playbook only supports macOS."
+
+    - name: Homebrew
+      ansible.builtin.import_tasks: tasks/homebrew.yml
+      tags: [homebrew]
+
+    - name: Packages (formulae + casks)
+      ansible.builtin.import_tasks: tasks/packages.yml
+      tags: [packages]
+
+    - name: Git config
+      ansible.builtin.import_tasks: tasks/git.yml
+      tags: [git]
+
+    - name: Shell (bash default + .bash_profile)
+      ansible.builtin.import_tasks: tasks/shell.yml
+      tags: [shell]
+
+    - name: Language runtimes (rbenv / nvm / python)
+      ansible.builtin.import_tasks: tasks/languages.yml
+      tags: [languages]
+
+    - name: Neovim (Vundle + Ctrlp + Gruvbox)
+      ansible.builtin.import_tasks: tasks/neovim.yml
+      tags: [neovim]
+
+    - name: iTerm2 (install + Gruvbox profile)
+      ansible.builtin.import_tasks: tasks/iterm.yml
+      tags: [iterm]
+
+    - name: VS Code (install + settings + Gruvbox)
+      ansible.builtin.import_tasks: tasks/vscode.yml
+      tags: [vscode]
+
+    - name: Done
+      ansible.builtin.debug:
+        msg: >-
+          Setup complete. Open a fresh terminal (or `source ~/.bash_profile`).
+          If iTerm2 was running, quit and reopen it to pick up the Gruvbox profile.

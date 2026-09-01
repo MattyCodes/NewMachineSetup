@@ -1,0 +1,32 @@
+---
+# python, rbenv, ruby-build and nvm are installed as formulae in packages.yml.
+# This file just makes them usable.
+
+- name: Ensure NVM_DIR exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.nvm"
+    state: directory
+    mode: "0755"
+
+- name: Install a default Node version via nvm
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |
+      set -e
+      export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+      source "$(brew --prefix nvm)/nvm.sh"
+      nvm install {{ node_version }}
+      nvm alias default {{ node_version }}
+    creates: "{{ ansible_env.HOME }}/.nvm/alias/default"
+  when: node_version | length > 0
+
+- name: Install a global Ruby version via rbenv
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |
+      set -e
+      eval "$(rbenv init - bash)"
+      rbenv install --skip-existing {{ ruby_version }}
+      rbenv global {{ ruby_version }}
+    creates: "{{ ansible_env.HOME }}/.rbenv/versions/{{ ruby_version }}"
+  when: ruby_version | length > 0

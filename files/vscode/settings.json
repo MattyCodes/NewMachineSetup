@@ -1,0 +1,12 @@
+{
+  "workbench.colorTheme": "Gruvbox Dark Medium",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [81, 100],
+  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 13,
+  "editor.renderWhitespace": "boundary",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "telemetry.telemetryLevel": "off"
+}

@@ -1,0 +1,30 @@
+---
+- name: Create Neovim config directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ ansible_env.HOME }}/.config/nvim"
+    - "{{ ansible_env.HOME }}/.config/nvim/bundle"
+
+- name: Clone Vundle
+  ansible.builtin.git:
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    dest: "{{ ansible_env.HOME }}/.config/nvim/bundle/Vundle.vim"
+    version: master
+    update: false
+
+- name: Deploy init.vim
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/nvim/init.vim"
+    dest: "{{ ansible_env.HOME }}/.config/nvim/init.vim"
+    mode: "0644"
+    backup: true
+
+- name: Install Neovim plugins headlessly (Vundle -> Ctrlp, Gruvbox, etc.)
+  ansible.builtin.command:
+    cmd: nvim --headless +PluginInstall +qall
+  environment:
+    GIT_TERMINAL_PROMPT: "0"
+  changed_when: true

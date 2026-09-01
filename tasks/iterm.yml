@@ -1,0 +1,37 @@
+---
+# iterm2 cask is installed in packages.yml. Here we install a "Gruvbox"
+# Dynamic Profile (colours + font + `/bin/bash --login`) and make it the default.
+
+- name: Create iTerm2 DynamicProfiles directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles"
+    state: directory
+    mode: "0755"
+
+- name: Install the Gruvbox Dynamic Profile
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/iterm/gruvbox.json"
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles/gruvbox.json"
+    mode: "0644"
+
+- name: Also install the standalone .itermcolors preset (for manual import if wanted)
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/iterm/GruvboxDark.itermcolors"
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/GruvboxDark.itermcolors"
+    mode: "0644"
+
+- name: Make Gruvbox the default iTerm2 profile
+  community.general.osx_defaults:
+    domain: com.googlecode.iterm2
+    key: "Default Bookmark Guid"
+    type: string
+    value: "gruvbox-newmachinesetup"
+
+- name: Point iTerm2 at the managed prefs / stop it writing its own
+  community.general.osx_defaults:
+    domain: com.googlecode.iterm2
+    key: "{{ item.key }}"
+    type: "{{ item.type }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "PromptOnQuit", type: bool, value: "false" }
