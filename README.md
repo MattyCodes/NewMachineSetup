@@ -30,8 +30,24 @@ iTerm2 was already open, quit and reopen it.
 | Node | `nvm` + a default Node version (`--lts` by default) |
 | Ruby | `rbenv` + `ruby-build`; a global Ruby is installed only if you set `ruby_version` in `vars.yml` |
 | Neovim | `~/.config/nvim/init.vim` dropped in, Vundle cloned, `:PluginInstall` run headlessly (Ctrlp, Gruvbox, NERDTree, airline, gitgutter, ...) |
-| iTerm2 | "Gruvbox" Dynamic Profile installed (Gruvbox Dark colours, Menlo 14, runs `/bin/bash --login`) and set as the default profile |
-| VS Code | `jdinhlife.gruvbox` extension installed; `settings.json` dropped in with `Gruvbox Dark Medium` as the theme |
+| iTerm2 | "Gruvbox" Dynamic Profile installed (Menlo 14, runs `/bin/bash --login`) and set as the default profile |
+| VS Code | `jdinhlife.gruvbox` extension installed; `settings.json` dropped in |
+
+### Gruvbox light/dark
+
+Follows the macOS system appearance automatically, out of the box:
+
+- **iTerm2** – the Gruvbox Dynamic Profile carries separate colour sets
+  (`Use Separate Colors for Light and Dark Mode`); iTerm swaps them when the
+  system toggles, live, no restart.
+- **VS Code** – `window.autoDetectColorScheme: true` with
+  `preferredDarkColorTheme = Gruvbox Dark Medium` /
+  `preferredLightColorTheme = Gruvbox Light Medium`. Live.
+- **Neovim** – `init.vim` reads `AppleInterfaceStyle` at launch and sets
+  `background` accordingly. This is **startup-only**; switching the system theme
+  while nvim is open won't repaint it (add `f-person/auto-dark-mode.nvim` if you
+  want that). Standalone `GruvboxDark.itermcolors` / `GruvboxLight.itermcolors`
+  presets are also copied into `~/Library/Application Support/iTerm2/` for manual import.
 
 Existing `~/.bash_profile`, `~/.gitconfig`, `~/.config/nvim/init.vim` and VS Code
 `settings.json` are backed up (`.NNNN~` suffix) before being overwritten.
@@ -56,7 +72,8 @@ machine-specific paths:
 - `files/gitconfig` – user name/email, aliases, LFS filters, `editor = nvim`.
 - `files/nvim/init.vim` – Vundle plugin list + settings. Gruvbox via
   `morhetz/gruvbox`, Ctrlp via the maintained `ctrlpvim/ctrlp.vim` fork.
-- `files/vscode/settings.json` – theme, tab size, rulers, whitespace.
+- `files/vscode/settings.json` – auto light/dark Gruvbox, tab size, rulers,
+  whitespace, plus the terminal/python prefs carried over from the current machine.
 - `files/iterm/gruvbox.json` – iTerm2 Dynamic Profile.
 - `files/iterm/GruvboxDark.itermcolors` – the same palette as an importable preset.
 

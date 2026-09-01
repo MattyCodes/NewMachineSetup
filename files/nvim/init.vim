@@ -74,7 +74,18 @@ set statusline+=%F
 syntax enable
 
 " Gruvbox syntax theme (silent! so a fresh install without plugins doesn't abort).
-set background=dark
+" Follow the macOS system appearance at startup. Live switching while nvim is
+" already open needs a plugin (e.g. f-person/auto-dark-mode.nvim); this just
+" picks the right variant when nvim launches.
+if executable('defaults')
+  if system('defaults read -g AppleInterfaceStyle 2>/dev/null') =~? 'dark'
+    set background=dark
+  else
+    set background=light
+  endif
+else
+  set background=dark
+endif
 let g:gruvbox_italic=1
 silent! colorscheme gruvbox
 

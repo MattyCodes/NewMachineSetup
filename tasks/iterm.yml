@@ -4,21 +4,24 @@
 
 - name: Create iTerm2 DynamicProfiles directory
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles"
+    path: "{{ ansible_facts.env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles"
     state: directory
     mode: "0755"
 
 - name: Install the Gruvbox Dynamic Profile
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/files/iterm/gruvbox.json"
-    dest: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles/gruvbox.json"
+    dest: "{{ ansible_facts.env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles/gruvbox.json"
     mode: "0644"
 
-- name: Also install the standalone .itermcolors preset (for manual import if wanted)
+- name: Also install the standalone .itermcolors presets (for manual import if wanted)
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/files/iterm/GruvboxDark.itermcolors"
-    dest: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/GruvboxDark.itermcolors"
+    src: "{{ playbook_dir }}/files/iterm/{{ item }}"
+    dest: "{{ ansible_facts.env.HOME }}/Library/Application Support/iTerm2/{{ item }}"
     mode: "0644"
+  loop:
+    - GruvboxDark.itermcolors
+    - GruvboxLight.itermcolors
 
 - name: Make Gruvbox the default iTerm2 profile
   community.general.osx_defaults:

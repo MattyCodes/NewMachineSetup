@@ -7,16 +7,21 @@
   vars_files:
     - vars.yml
 
-  # Make sure Homebrew (and anything it installed) is on PATH for every task,
-  # even on the very first run before ~/.bash_profile is in effect.
+  # Make sure Homebrew is on PATH for every task, even on the very first run
+  # before ~/.bash_profile is in effect. Both candidate prefixes are listed so
+  # this needs no facts; the one that doesn't exist is simply ignored.
   environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin:{{ ansible_env.PATH }}"
+    PATH: "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:{{ ansible_facts.env.PATH | default('/usr/bin:/bin') }}"
 
   tasks:
     - name: Assert this is macOS
       ansible.builtin.assert:
         that: ansible_facts['os_family'] == 'Darwin'
         fail_msg: "This playbook only supports macOS."
+
+    - name: Determine the Homebrew prefix (Apple Silicon vs Intel)
+      ansible.builtin.set_fact:
+        homebrew_prefix: "{{ '/opt/homebrew' if ansible_facts['architecture'] == 'arm64' else '/usr/local' }}"
 
     - name: Homebrew
       ansible.builtin.import_tasks: tasks/homebrew.yml

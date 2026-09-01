@@ -1,7 +1,4 @@
 ---
-# Architecture-aware Homebrew location (Apple Silicon vs Intel).
-homebrew_prefix: "{{ '/opt/homebrew' if ansible_facts['architecture'] == 'arm64' else '/usr/local' }}"
-
 # CLI tools installed as Homebrew formulae.
 homebrew_formulae:
   - git

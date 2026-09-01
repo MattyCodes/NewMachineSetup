@@ -15,13 +15,13 @@
 
 - name: Ensure VS Code User settings directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/Library/Application Support/Code/User"
+    path: "{{ ansible_facts.env.HOME }}/Library/Application Support/Code/User"
     state: directory
     mode: "0755"
 
 - name: Deploy VS Code settings.json
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/files/vscode/settings.json"
-    dest: "{{ ansible_env.HOME }}/Library/Application Support/Code/User/settings.json"
+    dest: "{{ ansible_facts.env.HOME }}/Library/Application Support/Code/User/settings.json"
     mode: "0644"
     backup: true

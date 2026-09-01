@@ -1,5 +1,9 @@
 {
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Gruvbox Dark Medium",
+  "workbench.preferredLightColorTheme": "Gruvbox Light Medium",
   "workbench.colorTheme": "Gruvbox Dark Medium",
+  "workbench.startupEditor": "none",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.rulers": [81, 100],
@@ -8,5 +12,10 @@
   "editor.renderWhitespace": "boundary",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.initialHint": false,
+  "python.terminal.activateEnvironment": false,
+  "containers.containerClient": "com.microsoft.visualstudio.containers.docker",
+  "containers.orchestratorClient": "com.microsoft.visualstudio.orchestrators.dockercompose",
   "telemetry.telemetryLevel": "off"
 }

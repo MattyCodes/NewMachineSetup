@@ -4,7 +4,7 @@
 
 - name: Ensure NVM_DIR exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.nvm"
+    path: "{{ ansible_facts.env.HOME }}/.nvm"
     state: directory
     mode: "0755"
 
@@ -13,11 +13,11 @@
     executable: /bin/bash
     cmd: |
       set -e
-      export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+      export NVM_DIR="{{ ansible_facts.env.HOME }}/.nvm"
       source "$(brew --prefix nvm)/nvm.sh"
       nvm install {{ node_version }}
       nvm alias default {{ node_version }}
-    creates: "{{ ansible_env.HOME }}/.nvm/alias/default"
+    creates: "{{ ansible_facts.env.HOME }}/.nvm/alias/default"
   when: node_version | length > 0
 
 - name: Install a global Ruby version via rbenv
@@ -28,5 +28,5 @@
       eval "$(rbenv init - bash)"
       rbenv install --skip-existing {{ ruby_version }}
       rbenv global {{ ruby_version }}
-    creates: "{{ ansible_env.HOME }}/.rbenv/versions/{{ ruby_version }}"
+    creates: "{{ ansible_facts.env.HOME }}/.rbenv/versions/{{ ruby_version }}"
   when: ruby_version | length > 0

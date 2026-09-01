@@ -5,20 +5,20 @@
     state: directory
     mode: "0755"
   loop:
-    - "{{ ansible_env.HOME }}/.config/nvim"
-    - "{{ ansible_env.HOME }}/.config/nvim/bundle"
+    - "{{ ansible_facts.env.HOME }}/.config/nvim"
+    - "{{ ansible_facts.env.HOME }}/.config/nvim/bundle"
 
 - name: Clone Vundle
   ansible.builtin.git:
     repo: https://github.com/VundleVim/Vundle.vim.git
-    dest: "{{ ansible_env.HOME }}/.config/nvim/bundle/Vundle.vim"
+    dest: "{{ ansible_facts.env.HOME }}/.config/nvim/bundle/Vundle.vim"
     version: master
     update: false
 
 - name: Deploy init.vim
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/files/nvim/init.vim"
-    dest: "{{ ansible_env.HOME }}/.config/nvim/init.vim"
+    dest: "{{ ansible_facts.env.HOME }}/.config/nvim/init.vim"
     mode: "0644"
     backup: true
 
