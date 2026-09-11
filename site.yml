@@ -31,6 +31,10 @@
       ansible.builtin.import_tasks: tasks/packages.yml
       tags: [packages]
 
+    - name: Firefox (1Password extension policy)
+      ansible.builtin.import_tasks: tasks/firefox.yml
+      tags: [firefox]
+
     - name: Git config
       ansible.builtin.import_tasks: tasks/git.yml
       tags: [git]

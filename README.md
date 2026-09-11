@@ -24,7 +24,8 @@ iTerm2 was already open, quit and reopen it.
 |------|--------|
 | Homebrew | installed if missing, then `brew update` |
 | Formulae | `git`, `python`, `rbenv` + `ruby-build`, `nvm`, `awscli`, `docker` + `docker-compose` + `docker-buildx`, `colima`, `neovim` |
-| Casks | `iterm2`, `docker-desktop`, `brave-browser`, `tidal`, `slack`, `claude`, `visual-studio-code` |
+| Casks | `iterm2`, `docker-desktop`, `firefox`, `tidal`, `slack`, `claude`, `visual-studio-code` |
+| Firefox | `policies.json` dropped into the app bundle so the 1Password extension auto-installs on first launch (`normal_installed` — you can still disable/remove it) |
 | Shell | `/bin/bash` set as login shell; scrubbed `~/.bash_profile` dropped in; empty `~/.secrets` created for machine-local env vars |
 | Git | scrubbed `~/.gitconfig` dropped in |
 | Node | `nvm` + a default Node version (`--lts` by default) |
@@ -60,7 +61,7 @@ ansible-playbook site.yml --tags "packages,vscode"
 ansible-playbook site.yml --list-tags
 ```
 
-Tags: `homebrew packages git shell languages neovim iterm vscode`.
+Tags: `homebrew packages firefox git shell languages neovim iterm vscode`.
 
 ## Config sources
 
@@ -74,6 +75,8 @@ machine-specific paths:
   `morhetz/gruvbox`, Ctrlp via the maintained `ctrlpvim/ctrlp.vim` fork.
 - `files/vscode/settings.json` – auto light/dark Gruvbox, tab size, rulers,
   whitespace, plus the terminal/python prefs carried over from the current machine.
+- `files/firefox/policies.json` – enterprise policy that force-adds the
+  1Password extension (`ExtensionSettings`); no secrets involved.
 - `files/iterm/gruvbox.json` – iTerm2 Dynamic Profile.
 - `files/iterm/GruvboxDark.itermcolors` – the same palette as an importable preset.
 
@@ -82,7 +85,9 @@ commit.
 
 ## Manual steps the playbook can't do
 
-- **Sign in** to Slack, Tidal, Claude, Brave, VS Code (Settings Sync), AWS (`aws configure`).
+- **Sign in** to Slack, Tidal, Claude, Firefox Sync, VS Code (Settings Sync), AWS (`aws configure`).
+- **1Password**: the extension auto-installs into Firefox, but you still sign in to
+  your 1Password account by hand (Ansible never touches credentials).
 - **iTerm2 → "Make iTerm2 the default terminal"** if you want it to own the
   `open` / Terminal role (System Settings has no scriptable switch for this).
 - First `docker` run: start **Docker Desktop** once, or `colima start`.

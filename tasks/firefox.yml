@@ -1,0 +1,32 @@
+---
+# firefox cask is installed in packages.yml. Here we drop in an enterprise
+# policies.json that installs the 1Password extension on first launch —
+# no MDM/profile required, just a file inside the app bundle.
+# Docs: https://support.mozilla.org/en-US/kb/deploying-firefox-customizations-macos
+#
+# "normal_installed" (rather than "force_installed") installs the extension
+# but leaves it fully user-manageable — you can disable/remove it like any
+# other extension afterwards. Signing in to your 1Password account is still
+# a manual, one-time step (Ansible never touches that).
+#
+# Needs write access to /Applications/Firefox.app, which a Homebrew-cask
+# install already grants to the installing (admin) user — no sudo expected.
+
+- name: Locate Firefox.app
+  ansible.builtin.stat:
+    path: /Applications/Firefox.app
+  register: firefox_app
+
+- name: Create Firefox distribution directory (for policies.json)
+  ansible.builtin.file:
+    path: /Applications/Firefox.app/Contents/Resources/distribution
+    state: directory
+    mode: "0755"
+  when: firefox_app.stat.exists
+
+- name: Deploy policies.json (auto-installs the 1Password extension)
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/files/firefox/policies.json"
+    dest: /Applications/Firefox.app/Contents/Resources/distribution/policies.json
+    mode: "0644"
+  when: firefox_app.stat.exists

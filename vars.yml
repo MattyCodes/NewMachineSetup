@@ -17,7 +17,7 @@ homebrew_formulae:
 homebrew_casks:
   - iterm2                # "iTerm downloaded"
   - docker-desktop        # "Docker installed"
-  - brave-browser         # "Brave Browser installed"
+  - firefox               # "Brave Browser" swapped for Firefox
   - tidal                 # "Tidal installed"
   - slack                 # "Slack desktop installed"
   - claude                # "Claude desktop installed"
