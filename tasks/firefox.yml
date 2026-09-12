@@ -29,4 +29,17 @@
     src: "{{ playbook_dir }}/files/firefox/policies.json"
     dest: /Applications/Firefox.app/Contents/Resources/distribution/policies.json
     mode: "0644"
+  register: firefox_policies
   when: firefox_app.stat.exists
+
+# Dropping a file into the app bundle after it was signed invalidates
+# Firefox's code-signature seal. If the bundle is still quarantined (as a
+# fresh Homebrew-cask download normally is), the next launch triggers
+# Gatekeeper's full signature check, which then fails against the added
+# file — "Firefox is damaged and can't be opened." Clearing the quarantine
+# attribute stops Gatekeeper from re-validating the bundle on launch.
+- name: Clear the quarantine attribute on Firefox.app
+  ansible.builtin.command:
+    cmd: xattr -dr com.apple.quarantine /Applications/Firefox.app
+  when: firefox_policies is changed
+  changed_when: true

@@ -12,11 +12,32 @@ cd ~/Projects/NewMachineSetup
 ./bootstrap.sh
 ```
 
-`bootstrap.sh` installs Homebrew, installs Ansible, pulls the required Ansible
-collection, then runs `site.yml` against `localhost`. No sudo password is needed.
+`bootstrap.sh` installs Xcode Command Line Tools (if the manual step above
+didn't already finish), Homebrew, Ansible, pulls the required Ansible
+collection, then runs `site.yml` against `localhost`.
+
+**Never run `bootstrap.sh` with `sudo`.** It asks for your admin password
+itself, once, up front, then installs a temporary `NOPASSWD` sudoers rule for
+your user (`/etc/sudoers.d/99-newmachinesetup`) so every later admin-requiring
+step — Command Line Tools, Homebrew casks like `docker-desktop` that shell out
+to `sudo` mid-install — can do so without prompting again, even from inside an
+Ansible subprocess that has no controlling terminal. That drop-in is removed
+again as soon as the script exits, success or failure (`trap ... EXIT`).
+Running the whole script under `sudo` instead makes Homebrew refuse to install
+anything, since Homebrew won't run as root.
 
 When it finishes: open a new terminal (or `source ~/.bash_profile`), and if
 iTerm2 was already open, quit and reopen it.
+
+### Troubleshooting: "Can't install ... not currently available from the
+### Software Update server"
+
+If `xcode-select --install` (or `bootstrap.sh`'s own headless attempt) fails
+with this error, it's almost always because **macOS itself is out of date** —
+Apple's catalog frequently won't serve Command Line Tools packages for a
+build that's several point releases behind. Install pending OS updates first
+(System Settings > General > Software Update, or `softwareupdate -i -a
+--restart`), then re-run `xcode-select --install` / `bootstrap.sh`.
 
 ## What it does
 

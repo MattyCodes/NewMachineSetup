@@ -15,6 +15,12 @@
 
 - name: Make /bin/bash the login shell
   ansible.builtin.command:
-    cmd: chsh -s /bin/bash
+    cmd: "chsh -s /bin/bash {{ ansible_facts.env.USER }}"
+  become: true
+  # As the target user, `chsh` always prompts for the account password (a
+  # PAM check, not sudo) even with no tty to answer it — it fails instead of
+  # hanging. Run as root instead: root can change any user's shell with no
+  # password prompt at all. bootstrap.sh already grants this run passwordless
+  # sudo, so `become` here needs no extra credentials.
   when: ansible_facts.env.SHELL != "/bin/bash"
   changed_when: true

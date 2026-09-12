@@ -15,8 +15,18 @@
       set -e
       export NVM_DIR="{{ ansible_facts.env.HOME }}/.nvm"
       source "$(brew --prefix nvm)/nvm.sh"
-      nvm install {{ node_version }}
-      nvm alias default {{ node_version }}
+      node_version="{{ node_version }}"
+      nvm install "$node_version"
+      # `nvm alias` doesn't accept install-only flags like --lts/--lts=<name>
+      # (unlike `nvm install`) — it wants a plain tag such as "lts/*" or
+      # "lts/<name>". Translate; pass anything else (a version, "node", an
+      # explicit lts/<codename>) straight through.
+      case "$node_version" in
+        --lts=*) alias_target="lts/${node_version#--lts=}" ;;
+        --lts)   alias_target="lts/*" ;;
+        *)       alias_target="$node_version" ;;
+      esac
+      nvm alias default "$alias_target"
     creates: "{{ ansible_facts.env.HOME }}/.nvm/alias/default"
   when: node_version | length > 0
 

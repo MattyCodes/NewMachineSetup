@@ -11,8 +11,9 @@
     greedy: true
   loop: "{{ homebrew_casks }}"
   register: cask_install
-  # Some casks (e.g. an app already installed by hand) report a non-fatal
-  # "already installed" error; treat only that case as OK.
+  # Some casks (e.g. an app already installed by hand, outside Homebrew)
+  # report a non-fatal error to that effect; treat only those as OK.
   failed_when:
     - cask_install is failed
     - "'already installed' not in (cask_install.msg | default(''))"
+    - "'there is already an App at' not in (cask_install.msg | default(''))"
