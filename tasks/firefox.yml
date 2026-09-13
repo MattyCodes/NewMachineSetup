@@ -1,7 +1,7 @@
 ---
 # firefox cask is installed in packages.yml. Here we drop in an enterprise
-# policies.json that installs 1Password + Dark Reader on first launch — no
-# MDM/profile required, just a file inside the app bundle.
+# policies.json that installs 1Password + Dark Reader + Dynamic Gruvbox Theme
+# on first launch — no MDM/profile required, just a file inside the app bundle.
 # Docs: https://support.mozilla.org/en-US/kb/deploying-firefox-customizations-macos
 #
 # "normal_installed" (rather than "force_installed") installs each extension

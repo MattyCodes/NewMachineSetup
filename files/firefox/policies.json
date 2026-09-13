@@ -8,6 +8,10 @@
       "addon@darkreader.org": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi",
         "installation_mode": "normal_installed"
+      },
+      "gruvbox-theme-switcher@local": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/dynamic-gruvbox-theme/latest.xpi",
+        "installation_mode": "normal_installed"
       }
     }
   }

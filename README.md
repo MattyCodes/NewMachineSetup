@@ -46,7 +46,7 @@ build that's several point releases behind. Install pending OS updates first
 | Homebrew | installed if missing, then `brew update` |
 | Formulae | `git`, `python`, `rbenv` + `ruby-build`, `nvm`, `awscli`, `docker` + `docker-compose` + `docker-buildx`, `colima`, `neovim` |
 | Casks | `iterm2`, `docker-desktop`, `firefox`, `tidal`, `slack`, `claude`, `visual-studio-code` |
-| Firefox | `policies.json` dropped into the app bundle so 1Password + Dark Reader auto-install on first launch (`normal_installed` — you can still disable/remove either) |
+| Firefox | `policies.json` dropped into the app bundle so 1Password + Dark Reader + Dynamic Gruvbox Theme auto-install on first launch (`normal_installed` — you can still disable/remove any of them) |
 | Shell | `/bin/bash` set as login shell; scrubbed `~/.bash_profile` dropped in; empty `~/.secrets` created for machine-local env vars |
 | Git | scrubbed `~/.gitconfig` dropped in |
 | Node | `nvm` + a default Node version (`--lts` by default) |
@@ -97,7 +97,8 @@ machine-specific paths:
 - `files/vscode/settings.json` – auto light/dark Gruvbox, tab size, rulers,
   whitespace, plus the terminal/python prefs carried over from the current machine.
 - `files/firefox/policies.json` – enterprise policy that auto-adds the
-  1Password and Dark Reader extensions (`ExtensionSettings`); no secrets involved.
+  1Password, Dark Reader, and Dynamic Gruvbox Theme extensions
+  (`ExtensionSettings`); no secrets involved.
 - `files/iterm/gruvbox.json` – iTerm2 Dynamic Profile.
 - `files/iterm/GruvboxDark.itermcolors` – the same palette as an importable preset.
 
