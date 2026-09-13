@@ -24,7 +24,10 @@ homebrew_casks:
   - visual-studio-code    # "VSCode installed"
 
 vscode_extensions:
-  - jdinhlife.gruvbox     # Gruvbox theme for VS Code
+  - jdinhlife.gruvbox                   # Gruvbox theme for VS Code
+  - shd101wyy.markdown-preview-enhanced # Markdown Preview Enhanced
+  - alefragnani.project-manager         # Project Manager
+  - vscodevim.vim                       # Vim keybindings
 
 # Language runtimes.
 # node_version is passed straight to `nvm install` ("--lts", "20", "lts/iron", ...).

@@ -53,7 +53,7 @@ build that's several point releases behind. Install pending OS updates first
 | Ruby | `rbenv` + `ruby-build`; a global Ruby is installed only if you set `ruby_version` in `vars.yml` |
 | Neovim | `~/.config/nvim/init.vim` dropped in, Vundle cloned, `:PluginInstall` run headlessly (Ctrlp, Gruvbox, NERDTree, airline, gitgutter, ...) |
 | iTerm2 | "Gruvbox" Dynamic Profile installed (Menlo 14, runs `/bin/bash --login`) and set as the default profile |
-| VS Code | `jdinhlife.gruvbox` extension installed; `settings.json` dropped in |
+| VS Code | `jdinhlife.gruvbox`, `shd101wyy.markdown-preview-enhanced`, `alefragnani.project-manager`, `vscodevim.vim` extensions installed; `settings.json` dropped in |
 
 ### Gruvbox light/dark
 
